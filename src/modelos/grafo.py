@@ -8,13 +8,7 @@ class GrafoWikipedia:
 
     def __init__(self):
         self.articulos = {}
-    
-    {
-        1: {1, "Python", (), (2), ()},
-        2: {2, "Java", (), (), (1)}
-    }
-    
-
+  
     def agregar_articulo(self, id_articulo, nombre):
         articulo = ArticuloWikipedia(id_articulo, nombre)
         self.articulos[id_articulo] = articulo
@@ -78,6 +72,13 @@ class GrafoWikipedia:
                     cola.append(vecino)
 
         return recorrido
+    {
+        0: {0, "Python", (), (3), (1,4)},
+        1: {1, "Java", (), (0,2), (3)},
+        2: {2, "C++", (), (), (1,3)},
+        3: {3, "JavaScript", (), (1,2), (0)},
+        4: {4, "Ruby", (), (0), ()},
+    }
 
     def dfs(self, id_inicio):
         """
@@ -87,12 +88,12 @@ class GrafoWikipedia:
         if id_inicio not in self.articulos:
             return []
 
-        visitados = set()
-        pila = [id_inicio]
-        recorrido = []
+        visitados = set() #{0,3,1,2}
+        pila = [id_inicio] #[]
+        recorrido = [] #[0,3,1,2]
 
         while pila:
-            actual = pila.pop()
+            actual = pila.pop() #2
 
             if actual in visitados:
                 continue
@@ -100,8 +101,8 @@ class GrafoWikipedia:
             visitados.add(actual)
             recorrido.append(actual)
 
-            vecinos = list(self.articulos[actual].enlaces_salida)
-            vecinos.reverse()
+            vecinos = list(self.articulos[actual].enlaces_salida) #[]
+            vecinos.reverse() # []
 
             for vecino in vecinos:
                 if vecino not in visitados:
@@ -146,11 +147,6 @@ class GrafoWikipedia:
         return camino
 
     def pagerank(self, iteraciones=20, damping=0.85):
-        """
-        TODO:
-        Este método puede servir como base para la versión final.
-        Puede validarlo, modificarlo o reimplementarlo.
-        """
         cantidad_nodos = self.cantidad_articulos()
         if cantidad_nodos == 0:
             return {}
@@ -174,8 +170,7 @@ class GrafoWikipedia:
                 aporte = puntajes[id_articulo] / articulo.grado_salida()
 
                 for vecino in articulo.enlaces_salida:
-                    #TODO, COMPLETAR LA LINEA FALTANTE
-                    print()
+                    nuevos_puntajes[vecino] += damping * aporte
 
             puntajes = nuevos_puntajes
 
