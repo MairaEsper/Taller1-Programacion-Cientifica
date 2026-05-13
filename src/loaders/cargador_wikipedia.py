@@ -52,7 +52,21 @@ class CargadorWikipedia:
 
     def cargar_grafo(self):
         grafo = GrafoWikipedia()
-
-        #TODO
-
+        
+        nombres_articulos = self.cargar_nombres_articulos()
+        for id, nombre in nombres_articulos.items():
+            grafo.agregar_articulo(id,nombre)
+            
+        nombres_categorias = self.cargar_nombres_categorias()
+        ruta_topcats_categories = self.ruta_dataset / "wiki-topcats_Categories.mtx"
+        leer_matriz_categories = self._leer_matriz_market(ruta_topcats_categories)
+        
+        for fila, columna in leer_matriz_categories:
+            grafo.agregar_categoria(fila, nombres_categorias[columna])
+                    
+        ruta_topcats = self.ruta_dataset / "wiki-topcats.mtx"
+        leer_matriz_enlaces = self._leer_matriz_market(ruta_topcats)
+        for fila, columna in leer_matriz_enlaces:
+            grafo.agregar_enlace(fila, columna)
+        
         return grafo

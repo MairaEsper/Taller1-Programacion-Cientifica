@@ -15,6 +15,9 @@ class GrafoWikipedia:
 
     def obtener_articulo(self, id_articulo):
         return self.articulos[id_articulo]
+    
+    def agregar_categoria(self, id_articulo, categoria):
+        self.articulos[id_articulo].agregar_categoria(categoria)
 
     def agregar_enlace(self, id_origen, id_destino):
         self.articulos[id_origen].agregar_enlace_salida(id_destino)
@@ -26,7 +29,7 @@ class GrafoWikipedia:
     def cantidad_enlaces(self):
         sum = 0
         for articulo in self.articulos.values():
-            sum += articulo.grado_salida
+            sum += articulo.grado_salida()
         return sum
 
     def top_por_grado_entrada(self, cantidad=10):
@@ -72,13 +75,6 @@ class GrafoWikipedia:
                     cola.append(vecino)
 
         return recorrido
-    {
-        0: {0, "Python", (), (3), (1,4)},
-        1: {1, "Java", (), (0,2), (3)},
-        2: {2, "C++", (), (), (1,3)},
-        3: {3, "JavaScript", (), (1,2), (0)},
-        4: {4, "Ruby", (), (0), ()},
-    }
 
     def dfs(self, id_inicio):
         """
@@ -88,12 +84,12 @@ class GrafoWikipedia:
         if id_inicio not in self.articulos:
             return []
 
-        visitados = set() #{0,3,1,2}
-        pila = [id_inicio] #[]
-        recorrido = [] #[0,3,1,2]
+        visitados = set() 
+        pila = [id_inicio] 
+        recorrido = [] 
 
         while pila:
-            actual = pila.pop() #2
+            actual = pila.pop()
 
             if actual in visitados:
                 continue
@@ -101,8 +97,8 @@ class GrafoWikipedia:
             visitados.add(actual)
             recorrido.append(actual)
 
-            vecinos = list(self.articulos[actual].enlaces_salida) #[]
-            vecinos.reverse() # []
+            vecinos = list(self.articulos[actual].enlaces_salida) 
+            vecinos.reverse() 
 
             for vecino in vecinos:
                 if vecino not in visitados:
