@@ -17,6 +17,9 @@ def main():
     print("Siguientes pasos sugeridos:")
     print("Completar analisis de BFS y DFS.")
     print("Implementar PageRank y exportar resultados.")
+    
+    menor_camino = grafo.bfs(2, 6354)
+    print("Menor camino de 2 a 6354:", menor_camino)
 
 
 if __name__ == "__main__":

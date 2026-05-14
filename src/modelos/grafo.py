@@ -48,7 +48,7 @@ class GrafoWikipedia:
             "enlaces": self.cantidad_enlaces(),
         }
 
-    def bfs(self, id_inicio):
+    def bfs(self, id_inicio, id_objetivo):
         """
         TODO:
         Implementar recorrido BFS.
@@ -58,23 +58,33 @@ class GrafoWikipedia:
         - marcar visitados;
         - retornar el orden de visita.
         """
-        if id_inicio not in self.articulos:
-            return []
+        if id_inicio or id_objetivo not in self.articulos:
+            return -1
 
-        visitados = set([id_inicio])
-        cola = deque([id_inicio])
-        recorrido = []
+
+        #id_inicio = 2
+        #id_objetivo = 7
+
+        visitados = set([id_inicio]) #[2, 4, 3, 0, 6, 7, 5, 1]
+        cola = deque([(id_inicio, 0)]) # [(5, 2), (1, 2)]
+
 
         while cola:
-            actual = cola.popleft()
-            recorrido.append(actual)
+            actual = cola.popleft() # (7, 2)
+            id_actual = actual[0] #7
+            cant_enlaces = actual[1] #2
 
-            for vecino in self.articulos[actual].enlaces_salida:
+            if id_actual == id_objetivo:
+                return cant_enlaces
+            
+
+            for vecino in self.articulos[id_actual].enlaces_salida:
                 if vecino not in visitados:
                     visitados.add(vecino)
-                    cola.append(vecino)
+                    cola.append((vecino, cant_enlaces + 1))
 
-        return recorrido
+
+        return -1
 
     def dfs(self, id_inicio):
         """
