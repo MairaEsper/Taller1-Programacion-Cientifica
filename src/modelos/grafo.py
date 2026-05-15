@@ -70,32 +70,32 @@ class GrafoWikipedia:
 
         return -1
 
-    def dfs(self, id_inicio, id_objetivo): #id_inicio = 6, id_objetivo = 3
+    def dfs(self, id_inicio, id_objetivo): 
         if id_inicio not in self.articulos or id_objetivo not in self.articulos:
             return False
 
-        visitados = set() #{6,3,4}
-        pila = [(id_inicio, False)] #[(7, False), (7,true), ]
+        visitados = set() 
+        pila = [(id_inicio, False)] 
 
         while pila:
-            actual = pila.pop() # (4,true)
-            print("Recorriendo actual[0]: ",actual[0])
-            if actual[0] in visitados:
+            actual = pila.pop() 
+            if actual in visitados:
                 continue
 
-            visitados.add(actual[0])
+            visitados.add(actual)
 
-            vecinos = list(self.articulos[actual[0]].enlaces_salida) #[6]
+            vecinos = list(self.articulos[actual[0]].enlaces_salida) 
+            vecinos.sort(key=lambda x: abs(x-id_objetivo))
             vecinos.reverse() #[6]
 
             for vecino in vecinos:
                 if vecino == id_inicio and actual[1] == True:
                     return True
-                if vecino not in visitados:
-                    if vecino == id_objetivo or actual[1] == True:
-                        pila.append((vecino, True))
-                    else:
-                        pila.append((vecino, False))          
+                nuevo_estado = False
+                if vecino == id_objetivo or actual[1] == True:
+                    nuevo_estado = True
+                if (vecino, nuevo_estado) not in visitados:
+                    pila.append((vecino, nuevo_estado))    
 
         return False
 
