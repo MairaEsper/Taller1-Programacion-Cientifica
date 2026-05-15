@@ -24,5 +24,15 @@ def main():
     dfs = grafo.dfs(2,3)
     print("Hay ciclo en 2 y 3:", dfs)
 
+    puntajes = grafo.pagerank()
+
+    ranking = list(puntajes.items())
+
+    ranking.sort(key=lambda item: item[1], reverse=True)
+
+    print("Top 10 según algoritmo Page Rank:")
+    for id_articulo, puntaje in ranking[:10]:
+        print(f"{id_articulo}: {puntaje}")
+
 if __name__ == "__main__":
     main()
