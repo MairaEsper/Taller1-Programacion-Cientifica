@@ -49,72 +49,55 @@ class GrafoWikipedia:
         }
 
     def bfs(self, id_inicio, id_objetivo):
-        """
-        TODO:
-        Implementar recorrido BFS.
-
-        Sugerencia:
-        - usar una cola (`deque`);
-        - marcar visitados;
-        - retornar el orden de visita.
-        """
-        if id_inicio or id_objetivo not in self.articulos:
+        if id_inicio not in self.articulos or id_objetivo not in self.articulos:
             return -1
 
-
-        #id_inicio = 2
-        #id_objetivo = 7
-
-        visitados = set([id_inicio]) #[2, 4, 3, 0, 6, 7, 5, 1]
-        cola = deque([(id_inicio, 0)]) # [(5, 2), (1, 2)]
-
+        visitados = set([id_inicio]) 
+        cola = deque([(id_inicio, 0)]) 
 
         while cola:
-            actual = cola.popleft() # (7, 2)
-            id_actual = actual[0] #7
-            cant_enlaces = actual[1] #2
+            actual = cola.popleft() 
+            id_actual = actual[0] 
+            cant_enlaces = actual[1] 
 
             if id_actual == id_objetivo:
                 return cant_enlaces
             
-
             for vecino in self.articulos[id_actual].enlaces_salida:
                 if vecino not in visitados:
                     visitados.add(vecino)
                     cola.append((vecino, cant_enlaces + 1))
 
-
         return -1
 
-    def dfs(self, id_inicio):
-        """
-        TODO:
-        Completar o reescribir este método usando una pila o recursión.
-        """
-        if id_inicio not in self.articulos:
-            return []
+    def dfs(self, id_inicio, id_objetivo): #id_inicio = 6, id_objetivo = 3
+        if id_inicio not in self.articulos or id_objetivo not in self.articulos:
+            return False
 
-        visitados = set() 
-        pila = [id_inicio] 
-        recorrido = [] 
+        visitados = set() #{6,3,4}
+        pila = [(id_inicio, False)] #[(7, False), (7,true), ]
 
         while pila:
-            actual = pila.pop()
-
-            if actual in visitados:
+            actual = pila.pop() # (4,true)
+            print("Recorriendo actual[0]: ",actual[0])
+            if actual[0] in visitados:
                 continue
 
-            visitados.add(actual)
-            recorrido.append(actual)
+            visitados.add(actual[0])
 
-            vecinos = list(self.articulos[actual].enlaces_salida) 
-            vecinos.reverse() 
+            vecinos = list(self.articulos[actual[0]].enlaces_salida) #[6]
+            vecinos.reverse() #[6]
 
             for vecino in vecinos:
+                if vecino == id_inicio and actual[1] == True:
+                    return True
                 if vecino not in visitados:
-                    pila.append(vecino)
+                    if vecino == id_objetivo or actual[1] == True:
+                        pila.append((vecino, True))
+                    else:
+                        pila.append((vecino, False))          
 
-        return recorrido
+        return False
 
     def encontrar_camino_simple(self, id_origen, id_destino):
         """

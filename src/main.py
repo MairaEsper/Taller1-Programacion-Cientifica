@@ -21,6 +21,8 @@ def main():
     menor_camino = grafo.bfs(2, 6354)
     print("Menor camino de 2 a 6354:", menor_camino)
 
+    dfs = grafo.dfs(2,3)
+    print("Hay ciclo en 2 y 3:", dfs)
 
 if __name__ == "__main__":
     main()
