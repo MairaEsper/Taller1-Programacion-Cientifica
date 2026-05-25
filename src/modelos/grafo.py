@@ -99,42 +99,6 @@ class GrafoWikipedia:
 
         return False
 
-    def encontrar_camino_simple(self, id_origen, id_destino):
-        """
-        TODO:
-        Mejorar esta búsqueda para encontrar caminos más interesantes.
-        Por ahora retorna un camino simple usando BFS.
-        """
-        if id_origen not in self.articulos or id_destino not in self.articulos:
-            return []
-
-        cola = deque([id_origen])
-        padres = {id_origen: None}
-
-        while cola:
-            actual = cola.popleft()
-
-            if actual == id_destino:
-                break
-
-            for vecino in self.articulos[actual].enlaces_salida:
-                if vecino not in padres:
-                    padres[vecino] = actual
-                    cola.append(vecino)
-
-        if id_destino not in padres:
-            return []
-
-        camino = []
-        actual = id_destino
-
-        while actual is not None:
-            camino.append(actual)
-            actual = padres[actual]
-
-        camino.reverse()
-        return camino
-
     def pagerank(self, iteraciones=20, damping=0.85):
         cantidad_nodos = self.cantidad_articulos()
         if cantidad_nodos == 0:
