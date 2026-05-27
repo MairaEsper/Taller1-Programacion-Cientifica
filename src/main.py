@@ -1,8 +1,11 @@
+import time
 from loaders.cargador_wikipedia import CargadorWikipedia
 from utilidades.reporte_basico import ReporteBasicoWikipedia
 
 
 def main():
+    inicio = time.perf_counter()
+
     cargador = CargadorWikipedia()
     grafo = cargador.cargar_grafo()
     reporte = ReporteBasicoWikipedia()
@@ -33,6 +36,10 @@ def main():
     print("Top 10 según algoritmo Page Rank:")
     for id_articulo, puntaje in ranking[:10]:
         print(f"{id_articulo}: {puntaje}")
+
+    fin = time.perf_counter()
+    tiempo_total = fin - inicio
+    print(f"\nTiempo total de ejecución: {round(tiempo_total, 4)} segundos")
 
 if __name__ == "__main__":
     main()
